@@ -3,17 +3,41 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
+const { celebrate, Joi, errors } = require('celebrate');
 
-const { PORT = 3000 } = process.env;
+const userRouter = require('./routes/userRouter');
+const articleRouter = require('./routes/articleRouter');
+const { createUser, loginUser } = require('./controllers/userController');
+
+const auth = require('./middlewares/auth');
+const { requestLogger, errorLogger } = require('./middlewares/logger');
+
+const Error404 = require('./errors/not-found-err');
+
+const {
+  PORT = 3000,
+  RATE_LIMIT_MINUTES = 15,
+  RATE_LIMIT_QTY = 200,
+  MONGO = 'mongodb://localhost:27017/news-tracker',
+} = process.env;
+
+const limiter = rateLimit({
+  windowMs: RATE_LIMIT_MINUTES * 60 * 1000,
+  max: RATE_LIMIT_QTY,
+});
+
 const app = express();
 
 mongoose
-  .connect(process.env.NODE_ENV === 'production' ? process.env.MONGO : 'mongodb://localhost:27017/news-explorer-api', {
+  .connect(MONGO, {
     useNewUrlParser: true,
     useCreateIndex: true,
     useFindAndModify: false,
   });
 
+app.set('trust proxy', 1);
+app.use(limiter);
 app.use(helmet());
 
 app.use(express.json());
@@ -21,5 +45,39 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(cookieParser());
 
+app.use(requestLogger);
+
+app.get('/crash-test', () => {
+  setTimeout(() => {
+    throw new Error('Server will go down');
+  }, 0);
+});
+
+app.post('/signup', celebrate({
+  body: Joi.object().keys({
+    password: Joi.string().required().min(8),
+    email: Joi.string().email().required(),
+    name: Joi.string().min(2).max(30).required(),
+  }),
+}), createUser);
+app.post('/signin', celebrate({
+  body: Joi.object().keys({
+    password: Joi.string().required().min(8),
+    email: Joi.string().email().required(),
+  }),
+}), loginUser);
+
+app.use('/users', auth, userRouter);
+app.use('/articles', auth, articleRouter);
+app.use('*', (req, res, next) => {
+  next(new Error404('Not found'));
+});
+
+app.use(errorLogger);
+app.use(errors());
+app.use((err, req, res) => {
+  res.status(err.statusCode ? err.statusCode : 500)
+    .send({ message: err.message });
+});
 
 app.listen(PORT, () => { });
