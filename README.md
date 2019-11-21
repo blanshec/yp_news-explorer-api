@@ -2,6 +2,5 @@
 
 ## Backend for a News Searching webpage
 
-### Backend aviable at: 
-
+Backend aviable at:
 <http://api.newsexplo.tk> || <https://api.newsexplo.tk>
