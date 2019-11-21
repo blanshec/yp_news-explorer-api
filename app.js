@@ -19,7 +19,7 @@ const {
   PORT = 3000,
   RATE_LIMIT_MINUTES = 15,
   RATE_LIMIT_QTY = 200,
-  MONGO = 'mongodb://localhost:27017/news-tracker',
+  MONGO = 'mongodb://localhost:27017/news-explorer-api',
 } = process.env;
 
 const limiter = rateLimit({
@@ -47,12 +47,6 @@ app.use(cookieParser());
 
 app.use(requestLogger);
 
-app.get('/crash-test', () => {
-  setTimeout(() => {
-    throw new Error('Server will go down');
-  }, 0);
-});
-
 app.post('/signup', celebrate({
   body: Joi.object().keys({
     password: Joi.string().required().min(8),
@@ -75,9 +69,10 @@ app.use('*', (req, res, next) => {
 
 app.use(errorLogger);
 app.use(errors());
-app.use((err, req, res) => {
+app.use((err, req, res, next) => {
   res.status(err.statusCode ? err.statusCode : 500)
     .send({ message: err.message });
+  next();
 });
 
 app.listen(PORT, () => { });
