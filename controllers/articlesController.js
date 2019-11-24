@@ -18,7 +18,7 @@ module.exports.createArticle = (req, res, next) => {
 };
 
 module.exports.getArticles = (req, res, next) => {
-  Article.find({})
+  Article.find({ owner: req.user._id })
     .populate('owner')
     .then((articles) => res.send({ data: articles }))
     .catch(() => next(new Error500('Error reading article list')));
