@@ -47,7 +47,7 @@ module.exports.loginUser = (req, res) => {
       }).send({ message: 'User logged in' });
     })
     .catch(() => {
-      throw new Error401(errorMessages.authError);
+      throw new Error401(errorMessages.ivalidCreds);
     });
 };
 

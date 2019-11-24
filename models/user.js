@@ -33,12 +33,12 @@ userSchema.statics.findUserByCreds = function (email, password) {
   return this.findOne({ email }).select('+password')
     .then((user) => {
       if (!user) {
-        throw Promise.reject(new Error(errorMessages.authError));
+        throw Promise.reject(new Error(errorMessages.ivalidCreds));
       }
       return bcrypt.compare(password, user.password)
         .then((matched) => {
           if (!matched) {
-            throw Promise.reject(new Error(errorMessages.authError));
+            throw Promise.reject(new Error(errorMessages.invalidCreds));
           }
           return user;
         });

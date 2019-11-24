@@ -74,10 +74,16 @@ app.use('*', (req, res, next) => {
 app.use(errorLogger);
 app.use(errors());
 
-app.use((err, req, res, next) => {
-  res.status(err.statusCode ? err.statusCode : 500)
-    .send({ message: errorMessages.serverError });
-  next();
+app.use((err, req, res) => {
+  const {
+    message,
+    statusCode = 500,
+  } = err;
+
+  res.status(statusCode)
+    .send({
+      message: statusCode === 500 ? errorMessages.serverError : message,
+    });
 });
 
 app.listen(PORT, () => { });
