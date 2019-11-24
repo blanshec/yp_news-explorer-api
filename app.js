@@ -17,10 +17,13 @@ const Error404 = require('./errors/not-found-err');
 
 const {
   PORT = 3000,
-  RATE_LIMIT_MINUTES = 15,
-  RATE_LIMIT_QTY = 200,
-  MONGO = 'mongodb://localhost:27017/news-explorer-api',
+  RATE_LIMIT_MINUTES,
+  RATE_LIMIT_QTY,
+  NODE_ENV,
+  MONGO,
 } = process.env;
+
+const { MONGO_DEV } = require('./config');
 
 const limiter = rateLimit({
   windowMs: RATE_LIMIT_MINUTES * 60 * 1000,
@@ -30,7 +33,7 @@ const limiter = rateLimit({
 const app = express();
 
 mongoose
-  .connect(MONGO, {
+  .connect(NODE_ENV === 'production' ? MONGO : MONGO_DEV, {
     useNewUrlParser: true,
     useCreateIndex: true,
     useFindAndModify: false,

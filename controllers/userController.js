@@ -1,5 +1,6 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const { JWT_DEV_SECRET } = require('../config');
 
 const Error404 = require('../errors/not-found-err');
 const Error400 = require('../errors/request-err');
@@ -33,7 +34,7 @@ module.exports.loginUser = (req, res, next) => {
     .then((user) => {
       const token = jwt.sign(
         { _id: user._id },
-        process.env.NODE_ENV === 'production' ? process.env.JWT_SECRET : 'dev-secret',
+        process.env.NODE_ENV === 'production' ? process.env.JWT_SECRET : JWT_DEV_SECRET,
         { expiresIn: '7d' },
       );
 
