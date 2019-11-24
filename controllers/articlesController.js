@@ -2,6 +2,7 @@ const Article = require('../models/article');
 
 const Error500 = require('../errors/500-err');
 const Error404 = require('../errors/not-found-err');
+const Error403 = require('../errors/403-err');
 
 module.exports.createArticle = (req, res, next) => {
   const {
@@ -29,9 +30,7 @@ module.exports.deleteArticle = (req, res, next) => {
     // eslint-disable-next-line consistent-return
     .then((article) => {
       if (JSON.stringify(article.owner) !== JSON.stringify(req.user._id)) {
-        const notArticleOwner = new Error('You cant delete what you dont own');
-        notArticleOwner.statusCode = 403;
-        throw notArticleOwner;
+        throw new Error403('You cant delete what you dont own');
       }
 
       Article.remove(article)
