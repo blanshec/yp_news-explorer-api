@@ -57,7 +57,7 @@ module.exports.getUser = (req, res, next) => {
   User.findById(req.user._id)
     .then((user) => {
       if (!user) throw Error;
-      res.send({ data: user });
+      res.send({ name: user.name, email: user.email });
     })
     .catch(() => next(new Error404(`User with this id does not exist ${req.user._id}`)));
 };
