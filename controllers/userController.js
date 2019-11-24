@@ -2,12 +2,13 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 const Error404 = require('../errors/not-found-err');
+const Error400 = require('../errors/request-err');
 
 const User = require('../models/user');
 
 // eslint-disable-next-line consistent-return
 module.exports.createUser = (req, res, next) => {
-  if (Object.keys(req.body).length === 0) return res.status(400).send({ message: 'Empty request body' });
+  if (Object.keys(req.body).length === 0) return new Error400('Empty request body');
 
   const {
     name, email, password,
@@ -22,11 +23,7 @@ module.exports.createUser = (req, res, next) => {
       name: user.name,
       email: user.email,
     }))
-    .catch(() => {
-      const err = new Error('Error creating a user');
-      err.statusCode = 400;
-      next(err);
-    });
+    .catch(() => next(new Error400('Error creating a user')));
 };
 
 module.exports.loginUser = (req, res, next) => {
