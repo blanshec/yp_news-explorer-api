@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const validate = require('validator');
-const bcrypt = require('bcryptjs');
+
+const errorMessages = require('../errors/error-messages.json');
 
 const articleSchema = new mongoose.Schema({
   keyword: {
@@ -28,7 +29,7 @@ const articleSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator: ((v) => validate.isURL(v)),
-      message: 'the string provided is not a link',
+      message: errorMessages.invalidLink,
     },
   },
   image: {
@@ -36,7 +37,7 @@ const articleSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator: ((v) => validate.isURL(v)),
-      message: 'the string provided is not a link',
+      message: errorMessages.invalidLink,
     },
   },
   owner: {
@@ -45,23 +46,5 @@ const articleSchema = new mongoose.Schema({
     required: true,
   },
 });
-
-// eslint-disable-next-line func-names
-articleSchema.statics.findUserByCreds = function (email, password) {
-  return this.findOne({ email }).select('+password')
-    .then((user) => {
-      if (!user) {
-        throw Promise.reject(new Error('Wrong email or password'));
-      }
-      return bcrypt.compare(password, user.password)
-        .then((matched) => {
-          if (!matched) {
-            throw Promise.reject(new Error('Wrong email or password'));
-          }
-          return user;
-        });
-    })
-    .catch((error) => error);
-};
 
 module.exports = mongoose.model('article', articleSchema);

@@ -13,6 +13,7 @@ const { createUser, loginUser } = require('./controllers/userController');
 const auth = require('./middlewares/auth');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
+const errorMessages = require('./errors/error-messages.json');
 const Error404 = require('./errors/404-err');
 
 const {
@@ -67,7 +68,7 @@ app.post('/signin', celebrate({
 app.use('/users', auth, userRouter);
 app.use('/articles', auth, articleRouter);
 app.use('*', (req, res, next) => {
-  next(new Error404('Page Not Found'));
+  next(new Error404(errorMessages.notFoundError));
 });
 
 app.use(errorLogger);
@@ -75,7 +76,7 @@ app.use(errors());
 
 app.use((err, req, res, next) => {
   res.status(err.statusCode ? err.statusCode : 500)
-    .send({ message: err.message });
+    .send({ message: errorMessages.serverError });
   next();
 });
 

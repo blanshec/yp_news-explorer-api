@@ -2,14 +2,16 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { JWT_DEV_SECRET } = require('../config');
 
-const Error404 = require('../errors/not-found-err');
-const Error400 = require('../errors/request-err');
+const errorMessages = require('../errors/error-messages.json');
+const Error404 = require('../errors/404-err');
+const Error400 = require('../errors/400-err');
+const Error401 = require('../errors/401-err');
 
 const User = require('../models/user');
 
 // eslint-disable-next-line consistent-return
 module.exports.createUser = (req, res, next) => {
-  if (Object.keys(req.body).length === 0) return new Error400('Empty request body');
+  if (Object.keys(req.body).length === 0) return new Error400(errorMessages.emptyRequestError);
 
   const {
     name, email, password,
@@ -24,10 +26,10 @@ module.exports.createUser = (req, res, next) => {
       name: user.name,
       email: user.email,
     }))
-    .catch(() => next(new Error400('Error creating a user')));
+    .catch(() => next(new Error400(errorMessages.createUserError)));
 };
 
-module.exports.loginUser = (req, res, next) => {
+module.exports.loginUser = (req, res) => {
   const { email, password } = req.body;
 
   return User.findUserByCreds(email, password)
@@ -44,10 +46,8 @@ module.exports.loginUser = (req, res, next) => {
         sameSite: true,
       }).send({ message: 'User logged in' });
     })
-    .catch((e) => {
-      const err = new Error(e.message);
-      err.statusCode = 401;
-      next(err);
+    .catch(() => {
+      throw new Error401(errorMessages.authError);
     });
 };
 
@@ -57,5 +57,5 @@ module.exports.getUser = (req, res, next) => {
       if (!user) throw Error;
       res.send({ name: user.name, email: user.email });
     })
-    .catch(() => next(new Error404(`User with this id does not exist ${req.user._id}`)));
+    .catch(() => next(new Error404(errorMessages.userNotFoundError)));
 };

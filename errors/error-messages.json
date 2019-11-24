@@ -1,0 +1,15 @@
+{
+  "serverError": "Iternal Server Error",
+  "notFoundError": "Page Not Found",
+  "emptyRequestError": "Empty Request Body",
+  "invalidLink": "Invalid Link",
+  "invalidEmail": "Ivalid Email Adress",
+  "createUserError": "Error creating a user",
+  "createArticleError": "Error creating an article",
+  "userNotFoundError": "User with this id does not exist",
+  "articleNotFoundError": "Article with this id does not exist",
+  "readArticleListError": "Error reading article list",
+  "articleOwnerError": "You cant delete what you dont own",
+  "deleteArticleError": "Error deleting an article",
+  "authError": "Invalid email or password"
+}
