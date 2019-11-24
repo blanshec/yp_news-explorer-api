@@ -1,7 +1,7 @@
 const Article = require('../models/article');
 
 const Error500 = require('../errors/500-err');
-const Error404 = require('../errors/not-found-err');
+const Error404 = require('../errors/404-err');
 const Error403 = require('../errors/403-err');
 
 module.exports.createArticle = (req, res, next) => {
