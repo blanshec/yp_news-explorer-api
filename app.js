@@ -1,4 +1,4 @@
-require('dotenv');
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
@@ -13,7 +13,7 @@ const { createUser, loginUser } = require('./controllers/userController');
 const auth = require('./middlewares/auth');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
-const Error404 = require('./errors/not-found-err');
+const Error404 = require('./errors/404-err');
 
 const {
   PORT = 3000,
@@ -67,11 +67,12 @@ app.post('/signin', celebrate({
 app.use('/users', auth, userRouter);
 app.use('/articles', auth, articleRouter);
 app.use('*', (req, res, next) => {
-  next(new Error404('Not found'));
+  next(new Error404('Page Not Found'));
 });
 
 app.use(errorLogger);
 app.use(errors());
+
 app.use((err, req, res, next) => {
   res.status(err.statusCode ? err.statusCode : 500)
     .send({ message: err.message });
