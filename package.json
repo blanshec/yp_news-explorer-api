@@ -1,0 +1,44 @@
+{
+  "name": "yp_news-explorer-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/blanshec/yp_news-explorer-api.git"
+  },
+  "keywords": [],
+  "author": "Alina Abdurshina",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/blanshec/yp_news-explorer-api/issues"
+  },
+  "homepage": "https://github.com/blanshec/yp_news-explorer-api#readme",
+  "devDependencies": {
+    "eslint": "^6.6.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.18.2",
+    "nodemon": "^1.19.4"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
+    "celebrate": "^10.1.0",
+    "cookie-parser": "^1.4.4",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-rate-limit": "^5.0.0",
+    "express-winston": "^4.0.1",
+    "helmet": "^3.21.2",
+    "jsonwebtoken": "^8.5.1",
+    "mongodb": "^3.3.2",
+    "mongoose": "^5.7.5",
+    "package.json": "^2.0.1",
+    "validator": "^11.1.0",
+    "winston": "^3.2.1"
+  }
+}
