@@ -35,7 +35,11 @@ module.exports.deleteArticle = (req, res, next) => {
       }
 
       Article.remove(article)
-        .then((articleToDelete) => res.send(articleToDelete !== null ? { data: article } : { data: 'Nothing to delete' }))
+        .then((articleToDelete) => res.send(
+          articleToDelete !== null
+            ? { data: article }
+            : { data: errorMessages.noDataToDelete },
+        ))
         .catch(() => { throw new Error500(errorMessages.deleteArticleError); });
     })
     .catch((err) => next(err.statusCode ? err : new Error404(errorMessages.articleNotFoundError)));

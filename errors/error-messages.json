@@ -11,6 +11,7 @@
   "readArticleListError": "Error reading article list",
   "articleOwnerError": "You cant delete what you dont own",
   "deleteArticleError": "Error deleting an article",
+  "noDataToDelete": "Nothing to delete",
   "authError": "Authsorisation error",
   "invalidCreds": "Invalid email or password"
 }
