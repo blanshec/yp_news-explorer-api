@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
+const cors = require('cors');
 const { celebrate, Joi, errors } = require('celebrate');
 
 const userRouter = require('./routes/userRouter');
@@ -39,6 +40,8 @@ mongoose
     useCreateIndex: true,
     useFindAndModify: false,
   });
+
+app.use(cors());
 
 app.set('trust proxy', 1);
 app.use(limiter);
