@@ -41,26 +41,10 @@ mongoose
     useFindAndModify: false,
   });
 
-app.use(cors());
-
-const allowedCors = [
-  'https://newsexplo.gq',
-  'http://newsexplo.gq',
-  'localhost:8080',
-];
-
-app.use((req, res, next) => {
-  const { origin } = req.headers;
-
-  if (allowedCors.includes(origin)) {
-    res.header('Access-Control-Allow-Origin', origin);
-  }
-  res.header('Access-Control-Allow-Credentials', 'true');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-
-  next();
-});
-
+app.use(cors({
+  credentials: true,
+  origin: true,
+}));
 app.set('trust proxy', 1);
 app.use(limiter);
 app.use(helmet());
