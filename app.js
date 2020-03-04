@@ -41,9 +41,22 @@ mongoose
     useFindAndModify: false,
   });
 
-app.use(cors({
-  origin: 'https://newsexplo.gq',
-}));
+const allowedCors = [
+  'https://newsexplo.gq',
+  'http://newsexplo.gq',
+  'localhost:3000',
+];
+
+app.use((req, res, next) => {
+  const { origin } = req.headers;
+
+  if (allowedCors.includes(origin)) {
+    res.header('Access-Control-Allow-Origin', origin);
+  }
+
+  next();
+});
+app.use(cors());
 
 app.set('trust proxy', 1);
 app.use(limiter);
