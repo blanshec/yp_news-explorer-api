@@ -60,6 +60,7 @@ app.use(cors({
     return callback(null, true);
   },
 }));
+app.options('*', cors());
 
 app.set('trust proxy', 1);
 app.use(limiter);
