@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
-// const cors = require('cors');
+const cors = require('cors');
 const { celebrate, Joi, errors } = require('celebrate');
 
 const userRouter = require('./routes/userRouter');
@@ -41,6 +41,8 @@ mongoose
     useFindAndModify: false,
   });
 
+app.use(cors());
+
 const allowedCors = [
   'https://newsexplo.gq',
   'http://newsexplo.gq',
@@ -62,7 +64,6 @@ app.use((req, res, next) => {
 
   next();
 });
-// app.use(cors());
 
 app.set('trust proxy', 1);
 app.use(limiter);
