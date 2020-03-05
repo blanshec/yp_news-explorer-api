@@ -14,12 +14,12 @@ module.exports.createUser = (req, res, next) => {
   if (Object.keys(req.body).length === 0) return new Error400(errorMessages.emptyRequestError);
 
   const {
-    name, email, password,
+    email, password, name,
   } = req.body;
 
   bcrypt.hash(password, 10)
     .then((hash) => User.create({
-      name, email, password: hash,
+      email, password: hash, name,
     }))
     .then((user) => res.status(201).send({
       _id: user._id,
