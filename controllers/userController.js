@@ -14,16 +14,16 @@ module.exports.createUser = (req, res, next) => {
   if (Object.keys(req.body).length === 0) return new Error400(errorMessages.emptyRequestError);
 
   const {
-    email, name, password,
+    email, username, password,
   } = req.body;
 
   bcrypt.hash(password, 10)
     .then((hash) => User.create({
-      email, name, password: hash,
+      email, username, password: hash,
     }))
     .then((user) => res.status(201).send({
       _id: user._id,
-      name: user.name,
+      username: user.username,
       email: user.email,
     }))
     .catch(() => next(new Error400(errorMessages.createUserError)));
@@ -55,7 +55,7 @@ module.exports.getUser = (req, res, next) => {
   User.findById(req.user._id)
     .then((user) => {
       if (!user) throw Error;
-      res.send({ name: user.name, email: user.email });
+      res.send({ username: user.username, email: user.email });
     })
     .catch(() => next(new Error404(errorMessages.userNotFoundError)));
 };
