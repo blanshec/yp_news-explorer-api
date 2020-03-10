@@ -42,7 +42,7 @@ mongoose
   });
 
 const whitelist = [
-  'https://newsexlpo.gq',
+  'https://newsexplo.gq',
   'http://newsexplo.gq',
   'http://localhost:8080',
 ];
