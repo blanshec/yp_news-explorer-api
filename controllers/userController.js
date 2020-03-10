@@ -29,7 +29,7 @@ module.exports.createUser = (req, res, next) => {
     .catch(() => next(new Error400(errorMessages.createUserError)));
 };
 
-module.exports.loginUser = (req, res) => {
+module.exports.loginUser = (req, res, next) => {
   const { email, password } = req.body;
 
   return User.findUserByCreds(email, password)
@@ -50,7 +50,7 @@ module.exports.loginUser = (req, res) => {
         .send({ login: true });
     })
     .catch(() => {
-      throw new Error401(errorMessages.ivalidCreds);
+      next(new Error401(errorMessages.ivalidCreds));
     });
 };
 
