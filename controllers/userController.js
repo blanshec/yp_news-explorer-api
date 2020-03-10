@@ -40,16 +40,28 @@ module.exports.loginUser = (req, res) => {
         { expiresIn: '7d' },
       );
 
-      res.status(201).cookie('jwt', token, {
-        maxAge: 3600000 * 24 * 7,
-        httpOnly: true,
-        sameSite: true,
-      }).send({ message: 'User logged in' });
+      res
+        .status(201)
+        .cookie('jwt', token, {
+          maxAge: 3600000 * 24 * 7,
+          httpOnly: true,
+          sameSite: true,
+        })
+        .send({ login: true });
     })
     .catch(() => {
       throw new Error401(errorMessages.ivalidCreds);
     });
 };
+
+module.exports.logoutUser = (req, res) => res
+  .status(201)
+  .cookie('jwt', '', {
+    maxAge: 0,
+    httpOnly: true,
+    sameSite: false,
+  })
+  .send({ login: false });
 
 module.exports.getUser = (req, res, next) => {
   User.findById(req.user._id)

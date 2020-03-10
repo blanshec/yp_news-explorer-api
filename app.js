@@ -9,7 +9,7 @@ const { celebrate, Joi, errors } = require('celebrate');
 
 const userRouter = require('./routes/userRouter');
 const articleRouter = require('./routes/articleRouter');
-const { createUser, loginUser } = require('./controllers/userController');
+const { createUser, loginUser, logoutUser } = require('./controllers/userController');
 
 const auth = require('./middlewares/auth');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
@@ -82,6 +82,7 @@ app.post('/signin', celebrate({
     email: Joi.string().email().required(),
   }),
 }), loginUser);
+app.post('/logout', logoutUser);
 
 app.use('/users', auth, userRouter);
 app.use('/articles', auth, articleRouter);
