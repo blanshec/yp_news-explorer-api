@@ -60,7 +60,7 @@ module.exports.logoutUser = (req, res) => res
   .cookie('jwt', '', {
     maxAge: 0,
     httpOnly: true,
-    sameSite: false,
+    sameSite: true,
   })
   .send({ login: false });
 

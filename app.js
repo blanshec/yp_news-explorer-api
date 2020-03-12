@@ -82,7 +82,7 @@ app.post('/signin', celebrate({
     email: Joi.string().email().required(),
   }),
 }), loginUser);
-app.post('/logout', logoutUser);
+app.get('/logout', logoutUser);
 
 app.use('/users', auth, userRouter);
 app.use('/articles', auth, articleRouter);
