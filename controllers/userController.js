@@ -44,6 +44,7 @@ module.exports.loginUser = (req, res, next) => {
         .status(201)
         .cookie('jwt', token, {
           maxAge: 3600000 * 24 * 7,
+          domain: 'newsexplo.gq',
           httpOnly: true,
           sameSite: true,
         })
