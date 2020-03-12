@@ -59,6 +59,7 @@ module.exports.logoutUser = (req, res) => res
   .status(201)
   .cookie('jwt', '', {
     maxAge: 0,
+    domain: 'newsexplo.gq',
     httpOnly: true,
     sameSite: true,
   })
