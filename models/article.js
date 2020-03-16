@@ -4,6 +4,10 @@ const validate = require('validator');
 const errorMessages = require('../errors/error-messages.json');
 
 const articleSchema = new mongoose.Schema({
+  keyword: {
+    type: String,
+    required: true,
+  },
   tag: {
     type: String,
     required: true,
