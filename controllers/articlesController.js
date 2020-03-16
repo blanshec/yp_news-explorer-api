@@ -7,13 +7,13 @@ const Error403 = require('../errors/403-err');
 
 module.exports.createArticle = (req, res, next) => {
   const {
-    keyword, tag, title, text, date, source, link, image,
+    keyword, title, text, date, source, link, image,
   } = req.body;
 
   const owner = req.user._id;
 
   Article.create({
-    keyword, tag, title, text, date, source, link, image, owner,
+    keyword, title, text, date, source, link, image, owner,
   })
     .then((article) => res.send(article))
     .catch(() => next(new Error500(errorMessages.createArticleError)));
